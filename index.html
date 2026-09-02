@@ -1,0 +1,1968 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Custom Employee ID Card</title>
+
+<style>
+
+/* =========================================================
+   BASIC SETTINGS
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --card-width: 53.98mm;
+    --card-height: 85.60mm;
+
+    --card-screen-width: 204px;
+    --card-screen-height: 324px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 25px;
+    background: #e9e9e9;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 27px;
+}
+
+
+/* =========================================================
+   DESIGNER LAYOUT
+========================================================= */
+
+.designer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 28px;
+}
+
+.card-wrapper {
+    text-align: center;
+}
+
+.card-label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+
+/* =========================================================
+   ID CARD
+========================================================= */
+
+.id-card {
+    position: relative;
+
+    width: var(--card-screen-width);
+    height: var(--card-screen-height);
+
+    background: #fff;
+
+    overflow: hidden;
+
+    border-radius: 6px;
+    border: 1px solid #ccc;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,.20);
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   PVC BACKGROUND
+========================================================= */
+
+.pvc-design {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: fill;
+
+    z-index: 1;
+
+    pointer-events: none;
+    user-select: none;
+
+    display: block;
+}
+
+
+/* =========================================================
+   FRONT
+========================================================= */
+
+.front {
+    position: relative;
+}
+
+.front-content {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   FRONT BLACK LINE
+========================================================= */
+
+.black-line {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 20%;
+
+    height: 0;
+
+    border-top: 0.6mm solid #000;
+
+    background: #000 !important;
+    opacity: 1 !important;
+
+    z-index: 100;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+
+/* =========================================================
+   ID NUMBER
+========================================================= */
+
+.id-number {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 25%;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    z-index: 30;
+}
+
+
+/* =========================================================
+   OWNER PHOTO
+   PORTRAIT PHOTO AREA
+========================================================= */
+
+.owner-photo {
+    position: absolute;
+
+    width: 42%;
+    height: 28%;
+
+    left: 31%;
+    top: 33%;
+
+    object-fit: cover;
+
+    border: 1px solid #222;
+
+    background: #fff;
+
+    display: block !important;
+
+    z-index: 50;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+
+/* =========================================================
+   EMPLOYEE NAME AREA
+========================================================= */
+
+.nickname {
+    position: absolute;
+
+    left: 5%;
+    right: 5%;
+
+    top: 62.5%;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    z-index: 30;
+}
+
+.full-name {
+    position: absolute;
+
+    left: 4%;
+    right: 4%;
+
+    top: 68%;
+
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    z-index: 30;
+}
+
+.position {
+    position: absolute;
+
+    left: 5%;
+    right: 5%;
+
+    top: 74%;
+
+    text-align: center;
+
+    font-size: 9px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    z-index: 30;
+}
+
+
+/* =========================================================
+   SIGNATURE
+========================================================= */
+
+.signature-preview {
+    position: absolute;
+
+    width: 70%;
+    height: 28%;
+
+    left: 20%;
+    top: 69%;
+
+    object-fit: contain;
+
+    display: none;
+
+    z-index: 50;
+
+    filter: contrast(1.4);
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+.signature-line {
+    position: absolute;
+
+    left: 29%;
+    width: 42%;
+
+    top: 85.5%;
+
+    border-top: 1px solid #000;
+
+    text-align: center;
+
+    font-size: 6px;
+
+    padding-top: 2px;
+
+    z-index: 30;
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.back {
+    position: relative;
+}
+
+.back-content {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+
+    padding: 0 7%;
+}
+
+
+/* =========================================================
+   VISION / MISSION
+========================================================= */
+
+.section-title {
+    position: relative;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    text-align: center;
+
+    letter-spacing: 1px;
+
+    margin: 0;
+
+    line-height: 1.15;
+}
+
+.back-text {
+    position: relative;
+
+    font-size: 6.5px;
+
+    line-height: 1.35;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    padding: 0 4%;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   BACK TOP SPACING
+========================================================= */
+
+.back-content > .section-title:first-child {
+    margin-top: 11%;
+}
+
+.back-content > .section-title:nth-of-type(2) {
+    margin-top: 8%;
+}
+
+
+/* =========================================================
+   EMERGENCY TITLE
+========================================================= */
+
+.emergency-title {
+    margin-top: 10%;
+
+    padding: 0 5%;
+}
+
+.emergency-title .line-1,
+.emergency-title .line-2 {
+    display: block;
+}
+
+
+/* =========================================================
+   EMERGENCY CONTACT BOX
+========================================================= */
+
+.emergency {
+    position: absolute;
+
+    left: 9%;
+    right: 9%;
+
+    top: 50.5%;
+
+    min-height: 13.5%;
+
+    border: 1px solid #222;
+
+    padding: 5px 6px;
+
+    text-align: left;
+
+    background: rgba(255,255,255,.12);
+
+    z-index: 20;
+}
+
+.emergency div {
+    margin: 2px 0;
+
+    font-size: 6.5px;
+
+    line-height: 1.25;
+}
+
+.emergency strong {
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   COMPANY INFORMATION
+========================================================= */
+
+.company-info {
+    position: absolute;
+
+    left: 10%;
+    right: 10%;
+
+    bottom: 7%;
+
+    border-top: 1px solid #000;
+
+    padding-top: 5px;
+
+    text-align: center;
+
+    font-size: 6px;
+
+    line-height: 1.35;
+}
+
+.company-info strong {
+    font-size: 6.2px;
+}
+
+
+/* =========================================================
+   EDITOR
+========================================================= */
+
+.editor {
+    width: 280px;
+
+    background: #fff;
+
+    padding: 17px;
+
+    border-radius: 9px;
+
+    box-shadow: 0 3px 12px rgba(0,0,0,.15);
+}
+
+.editor h2 {
+    margin: 0 0 12px;
+    font-size: 19px;
+}
+
+.editor label {
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
+
+.editor input {
+    width: 100%;
+
+    padding: 6px 7px;
+
+    border: 1px solid #bbb;
+
+    border-radius: 4px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+}
+
+.upload-section {
+    border-top: 1px solid #ddd;
+
+    margin-top: 12px;
+
+    padding-top: 8px;
+}
+
+.upload-section h3 {
+    font-size: 12px;
+
+    margin: 0 0 6px;
+}
+
+.editor button {
+    width: 100%;
+
+    padding: 9px;
+
+    margin-top: 12px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background: #000;
+
+    color: #fff;
+
+    font-weight: bold;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+.editor button:hover {
+    background: #333;
+}
+
+.editor button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.small-button {
+    padding: 7px !important;
+
+    margin-top: 5px !important;
+
+    font-size: 9px !important;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    body {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .designer {
+        gap: 20px;
+    }
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    @page {
+        size: auto;
+        margin: 10mm;
+    }
+
+    html,
+    body {
+        background: #fff;
+        padding: 0;
+        margin: 0;
+    }
+
+    h1,
+    .editor,
+    .card-label {
+        display: none !important;
+    }
+
+    .designer {
+        display: flex;
+
+        flex-direction: row;
+
+        justify-content: center;
+
+        align-items: flex-start;
+
+        gap: 10mm;
+
+        width: 100%;
+    }
+
+    .card-wrapper {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .id-card {
+        width: 53.98mm !important;
+        height: 85.60mm !important;
+
+        box-shadow: none;
+
+        border: 0.2mm solid #000;
+
+        border-radius: 0;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* OWNER PHOTO */
+
+    .owner-photo {
+        display: block !important;
+        visibility: visible !important;
+
+        width: 38% !important;
+        height: 26% !important;
+
+        z-index: 999 !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* BACKGROUND */
+
+    .pvc-design {
+        display: block !important;
+        visibility: visible !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* BLACK LINE */
+
+    .front .black-line {
+        display: block !important;
+        visibility: visible !important;
+
+        height: 0 !important;
+
+        border-top: 0.6mm solid #000 !important;
+
+        background: #000 !important;
+
+        opacity: 1 !important;
+
+        z-index: 999 !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .signature-preview {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<h1>Employee ID Card Designer</h1>
+
+
+<div class="designer">
+
+
+<!-- =====================================================
+     FRONT
+====================================================== -->
+
+<div class="card-wrapper">
+
+    <div class="card-label">FRONT</div>
+
+    <div class="id-card front" id="frontCard">
+
+        <!-- FIXED FRONT BACKGROUND -->
+
+        <img
+            class="pvc-design"
+            src="C:\Users\IT Adminstrator\Desktop\ID Generator\ID FRONT FINAL.jpg"
+            alt="PVC ID Front Design"
+            draggable="false"
+        >
+
+
+        <div class="front-content">
+
+            <!-- BLACK LINE -->
+
+            <div class="black-line"></div>
+
+
+            <!-- ID NUMBER -->
+
+            <div class="id-number">
+
+                ID NO:
+                <span id="displayId">000001</span>
+
+            </div>
+
+
+            <!-- OWNER PHOTO -->
+
+            <img
+                id="photoPreview"
+                class="owner-photo"
+                src=""
+                alt="Employee Photo"
+            >
+
+
+            <!-- NICKNAME -->
+
+            <div
+                class="nickname"
+                id="displayNickname"
+            >
+                NICKNAME
+            </div>
+
+
+            <!-- FULL NAME -->
+
+            <div
+                class="full-name"
+                id="displayName"
+            >
+                FULL NAME
+            </div>
+
+
+            <!-- POSITION -->
+
+            <div
+                class="position"
+                id="displayPosition"
+            >
+                POSITION
+            </div>
+
+
+            <!-- SIGNATURE -->
+
+            <img
+                id="signaturePreview"
+                class="signature-preview"
+                src=""
+                alt="Signature"
+            >
+
+
+            <div class="signature-line">
+                Signature
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     BACK
+====================================================== -->
+
+<div class="card-wrapper">
+
+    <div class="card-label">BACK</div>
+
+    <div class="id-card back" id="backCard">
+
+        <!-- FIXED BACKGROUND -->
+
+        <img
+            class="pvc-design"
+            src="C:\Users\IT Adminstrator\Desktop\ID Generator\ID BACK FINAL.jpg"
+            alt="PVC ID Back Design"
+            draggable="false"
+        >
+
+
+        <div class="back-content">
+
+
+            <!-- VISION -->
+
+            <div class="section-title">
+                VISION
+            </div>
+
+            <div
+                class="back-text"
+                id="displayVision"
+            >
+                To be the first choice bus transport in Southern Luzon and Eastern Visayas
+            </div>
+
+
+            <!-- MISSION -->
+
+            <br>
+
+            <div class="section-title">
+                MISSION
+            </div>
+
+            <div
+                class="back-text"
+                id="displayMission"
+            >
+                We at Bicol Isarog are committed to provide first class travel experience through innovation for your safety and comfort
+            </div>
+
+
+            <!-- EMERGENCY TITLE -->
+
+            <div class="section-title emergency-title">
+
+                <span class="line-1">
+                    PERSON TO NOTIFY IN
+                </span>
+
+                <span class="line-2">
+                    CASE OF EMERGENCY
+                </span>
+
+            </div>
+
+
+            <!-- EMERGENCY CONTACT -->
+
+            <div class="emergency">
+
+                <div>
+
+                    <strong>Name:</strong>
+
+                    <span id="displayEmergencyName">
+                        Emergency Contact
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Contact Number:</strong>
+
+                    <span id="displayEmergencyContact">
+                        09XX-XXX-XXXX
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>Address:</strong>
+
+                    <span id="displayEmergencyAddress">
+                        Emergency Contact Address
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FIXED COMPANY INFORMATION -->
+
+            <div class="company-info">
+
+                <strong>
+                    PENAFRANCIA TOURS AND TRAVELS TRANSPORT INC
+                </strong>
+
+                <br>
+
+                CU UNTONG BLDG., CONCEPCION GRANDE
+                <br>
+                NAGA CITY
+
+                <br>
+
+                Contact:
+                (054)475-3310 &
+                (054)881-2967
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EDITOR
+====================================================== -->
+
+<div class="editor">
+
+    <h2>Edit ID</h2>
+
+
+    <!-- ID NUMBER -->
+
+    <label for="idNumber">
+        ID Number
+    </label>
+
+    <input
+        type="text"
+        id="idNumber"
+        value="000001"
+        oninput="update()"
+    >
+
+
+    <!-- NICKNAME -->
+
+    <label for="nickname">
+        Nickname
+    </label>
+
+    <input
+        type="text"
+        id="nickname"
+        value="NICKNAME"
+        oninput="update()"
+    >
+
+
+    <!-- FULL NAME -->
+
+    <label for="fullName">
+        Full Name
+    </label>
+
+    <input
+        type="text"
+        id="fullName"
+        value="FULL NAME"
+        oninput="update()"
+    >
+
+
+    <!-- POSITION -->
+
+    <label for="position">
+        Position
+    </label>
+
+    <input
+        type="text"
+        id="position"
+        value="POSITION"
+        oninput="update()"
+    >
+
+
+    <!-- EMERGENCY CONTACT -->
+
+    <label for="emergencyName">
+        Emergency Contact Name
+    </label>
+
+    <input
+        type="text"
+        id="emergencyName"
+        value="Emergency Contact"
+        oninput="update()"
+    >
+
+
+    <label for="emergencyContact">
+        Emergency Contact Number
+    </label>
+
+    <input
+        type="text"
+        id="emergencyContact"
+        value="09XX-XXX-XXXX"
+        oninput="update()"
+    >
+
+
+    <label for="emergencyAddress">
+        Emergency Contact Address
+    </label>
+
+    <input
+        type="text"
+        id="emergencyAddress"
+        value="Emergency Contact Address"
+        oninput="update()"
+    >
+
+
+    <!-- OWNER PHOTO -->
+
+    <div class="upload-section">
+
+        <h3>
+            Owner Photo
+        </h3>
+
+        <input
+            type="file"
+            id="photoUpload"
+            accept="image/*"
+            onchange="loadImage(event,'photoPreview')"
+        >
+
+    </div>
+
+
+    <!-- SIGNATURE -->
+
+    <div class="upload-section">
+
+        <h3>
+            Signature
+        </h3>
+
+        <input
+            type="file"
+            id="signatureUpload"
+            accept="image/*"
+            onchange="loadImage(event,'signaturePreview')"
+        >
+
+    </div>
+
+
+    <!-- =================================================
+         PDF
+    ================================================== -->
+
+    <button
+        type="button"
+        id="pdfButton"
+        onclick="saveAsPDF()"
+    >
+        SAVE AS PDF TO DOWNLOADS
+    </button>
+
+
+    <!-- =================================================
+         JPEG EXPORT
+    ================================================== -->
+
+    <button
+        type="button"
+        id="frontJPEGButton"
+        onclick="saveCardAsJPEG('front')"
+    >
+        SAVE FRONT AS JPEG
+    </button>
+
+
+    <button
+        type="button"
+        id="backJPEGButton"
+        onclick="saveCardAsJPEG('back')"
+    >
+        SAVE BACK AS JPEG
+    </button>
+
+
+    <!-- =================================================
+         PRINT
+    ================================================== -->
+
+    <button
+        type="button"
+        class="small-button"
+        onclick="printCards()"
+    >
+        PRINT / SAVE USING BROWSER
+    </button>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================================
+   TEXT UPDATE
+========================================================= */
+
+function update() {
+
+    document.getElementById("displayId").textContent =
+        document.getElementById("idNumber").value;
+
+    document.getElementById("displayNickname").textContent =
+        document.getElementById("nickname").value;
+
+    document.getElementById("displayName").textContent =
+        document.getElementById("fullName").value;
+
+    document.getElementById("displayPosition").textContent =
+        document.getElementById("position").value;
+
+    document.getElementById("displayEmergencyName").textContent =
+        document.getElementById("emergencyName").value;
+
+    document.getElementById("displayEmergencyContact").textContent =
+        document.getElementById("emergencyContact").value;
+
+    document.getElementById("displayEmergencyAddress").textContent =
+        document.getElementById("emergencyAddress").value;
+}
+
+
+/* =========================================================
+   IMAGE UPLOAD
+========================================================= */
+
+function loadImage(event, elementId) {
+
+    const file = event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    if (!file.type.startsWith("image/")) {
+
+        alert("Please select a valid image file.");
+
+        event.target.value = "";
+
+        return;
+    }
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function(e) {
+
+        const image =
+            document.getElementById(elementId);
+
+
+        if (!image) {
+
+            console.error(
+                "Image element not found:",
+                elementId
+            );
+
+            alert(
+                "The image area could not be found."
+            );
+
+            return;
+        }
+
+
+        image.src = e.target.result;
+
+        image.style.display = "block";
+
+        image.style.visibility = "visible";
+
+
+        if (elementId === "photoPreview") {
+
+            image.style.zIndex = "50";
+
+        }
+
+
+        if (elementId === "signaturePreview") {
+
+            image.style.display = "block";
+
+        }
+
+    };
+
+
+    reader.onerror = function() {
+
+        alert(
+            "Unable to read the selected image."
+        );
+
+    };
+
+
+    reader.readAsDataURL(file);
+}
+
+
+/* =========================================================
+   LOAD EXTERNAL SCRIPT
+========================================================= */
+
+function loadScript(src) {
+
+    return new Promise((resolve, reject) => {
+
+
+        if (
+            src.includes("html2canvas") &&
+            window.html2canvas
+        ) {
+
+            resolve();
+
+            return;
+
+        }
+
+
+        if (
+            src.includes("jspdf") &&
+            window.jspdf
+        ) {
+
+            resolve();
+
+            return;
+
+        }
+
+
+        const script =
+            document.createElement("script");
+
+
+        script.src = src;
+
+
+        script.onload = resolve;
+
+
+        script.onerror = function() {
+
+            reject(
+                new Error(
+                    "Could not load required library."
+                )
+            );
+
+        };
+
+
+        document.head.appendChild(script);
+
+    });
+
+}
+
+
+/* =========================================================
+   WAIT FOR IMAGE
+========================================================= */
+
+function waitForImage(image) {
+
+    return new Promise((resolve) => {
+
+        if (
+            image.complete &&
+            image.naturalWidth > 0
+        ) {
+
+            resolve();
+
+            return;
+
+        }
+
+
+        image.onload = function() {
+
+            resolve();
+
+        };
+
+
+        image.onerror = function() {
+
+            resolve();
+
+        };
+
+    });
+
+}
+
+
+/* =========================================================
+   SAVE AS PDF
+   EXACT CR80
+   53.98 × 85.60 mm
+========================================================= */
+
+async function saveAsPDF() {
+
+    const button =
+        document.getElementById("pdfButton");
+
+
+    try {
+
+        button.disabled = true;
+
+        button.textContent =
+            "CREATING PDF...";
+
+
+        await loadScript(
+            "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        );
+
+
+        await loadScript(
+            "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        );
+
+
+        document
+            .querySelectorAll(".selected")
+            .forEach(el => {
+
+                el.classList.remove("selected");
+
+            });
+
+
+        const frontCard =
+            document.getElementById("frontCard");
+
+
+        const backCard =
+            document.getElementById("backCard");
+
+
+        if (!frontCard || !backCard) {
+
+            throw new Error(
+                "Front or back card was not found."
+            );
+
+        }
+
+
+        const photo =
+            document.getElementById("photoPreview");
+
+
+        if (
+            photo &&
+            photo.src &&
+            photo.src.startsWith("data:image")
+        ) {
+
+            await waitForImage(photo);
+
+        }
+
+
+        const signature =
+            document.getElementById("signaturePreview");
+
+
+        if (
+            signature &&
+            signature.src &&
+            signature.src.startsWith("data:image")
+        ) {
+
+            await waitForImage(signature);
+
+        }
+
+
+        /* FRONT */
+
+        const frontCanvas =
+            await html2canvas(
+                frontCard,
+                {
+                    scale: 4,
+
+                    useCORS: true,
+
+                    allowTaint: true,
+
+                    backgroundColor: "#ffffff",
+
+                    logging: false,
+
+                    imageTimeout: 0
+                }
+            );
+
+
+        /* BACK */
+
+        const backCanvas =
+            await html2canvas(
+                backCard,
+                {
+                    scale: 4,
+
+                    useCORS: true,
+
+                    allowTaint: true,
+
+                    backgroundColor: "#ffffff",
+
+                    logging: false,
+
+                    imageTimeout: 0
+                }
+            );
+
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+
+        const pdf =
+            new jsPDF({
+
+                orientation: "portrait",
+
+                unit: "mm",
+
+                format: [
+                    53.98,
+                    85.60
+                ],
+
+                compress: true
+
+            });
+
+
+        /* FRONT PAGE */
+
+        pdf.addImage(
+
+            frontCanvas.toDataURL(
+                "image/jpeg",
+                0.95
+            ),
+
+            "JPEG",
+
+            0,
+            0,
+
+            53.98,
+            85.60
+
+        );
+
+
+        /* BACK PAGE */
+
+        pdf.addPage(
+
+            [
+                53.98,
+                85.60
+            ],
+
+            "portrait"
+
+        );
+
+
+        pdf.addImage(
+
+            backCanvas.toDataURL(
+                "image/jpeg",
+                0.95
+            ),
+
+            "JPEG",
+
+            0,
+            0,
+
+            53.98,
+            85.60
+
+        );
+
+
+        /* FILENAME */
+
+        let idNumber =
+            document
+                .getElementById("idNumber")
+                .value
+                .trim();
+
+
+        if (!idNumber) {
+
+            idNumber = "ID";
+
+        }
+
+
+        idNumber =
+            idNumber.replace(
+                /[<>:"/\\|?*]/g,
+                "_"
+            );
+
+
+        const filename =
+            "Employee_ID_" +
+            idNumber +
+            ".pdf";
+
+
+        /* DOWNLOAD */
+
+        const blob =
+            pdf.output("blob");
+
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        const link =
+            document.createElement("a");
+
+
+        link.href = url;
+
+        link.download = filename;
+
+        link.style.display = "none";
+
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+
+        setTimeout(() => {
+
+            URL.revokeObjectURL(url);
+
+        }, 30000);
+
+
+        alert(
+            "PDF created successfully!\n\n" +
+
+            "Filename: " +
+            filename +
+
+            "\n\n" +
+
+            "Front: 53.98 × 85.60 mm\n" +
+
+            "Back: 53.98 × 85.60 mm\n\n" +
+
+            "Check your Downloads folder."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF creation error:",
+            error
+        );
+
+
+        alert(
+            "The PDF could not be created.\n\n" +
+
+            "Please make sure you are connected to the internet.\n\n" +
+
+            "Error: " +
+            error.message
+        );
+
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "SAVE AS PDF TO DOWNLOADS";
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE FRONT / BACK AS JPEG
+   CR80 PVC ID SIZE
+   53.98 × 85.60 mm
+========================================================= */
+
+async function saveCardAsJPEG(side) {
+
+    const button =
+        side === "front"
+            ? document.getElementById("frontJPEGButton")
+            : document.getElementById("backJPEGButton");
+
+
+    try {
+
+        button.disabled = true;
+
+        button.textContent =
+            "CREATING JPEG...";
+
+
+        /* Load html2canvas */
+
+        await loadScript(
+            "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        );
+
+
+        /* Determine card */
+
+        const card =
+            side === "front"
+                ? document.getElementById("frontCard")
+                : document.getElementById("backCard");
+
+
+        if (!card) {
+
+            throw new Error(
+                "ID card could not be found."
+            );
+
+        }
+
+
+        /* Wait for uploaded photo */
+
+        const photo =
+            document.getElementById("photoPreview");
+
+
+        if (
+            photo &&
+            photo.src &&
+            photo.src.startsWith("data:image")
+        ) {
+
+            await waitForImage(photo);
+
+        }
+
+
+        /* Wait for signature */
+
+        const signature =
+            document.getElementById("signaturePreview");
+
+
+        if (
+            signature &&
+            signature.src &&
+            signature.src.startsWith("data:image")
+        ) {
+
+            await waitForImage(signature);
+
+        }
+
+
+        /* =================================================
+           CAPTURE CARD
+           
+           Scale 4 gives a high-resolution JPEG suitable
+           for PVC ID printing.
+        ================================================= */
+
+        const canvas =
+            await html2canvas(
+                card,
+                {
+                    scale: 4,
+
+                    useCORS: true,
+
+                    allowTaint: true,
+
+                    backgroundColor: "#ffffff",
+
+                    logging: false,
+
+                    imageTimeout: 0
+                }
+            );
+
+
+        /* =================================================
+           GET ID NUMBER
+        ================================================= */
+
+        let idNumber =
+            document
+                .getElementById("idNumber")
+                .value
+                .trim();
+
+
+        if (!idNumber) {
+
+            idNumber = "ID";
+
+        }
+
+
+        /* Remove illegal Windows filename characters */
+
+        idNumber =
+            idNumber.replace(
+                /[<>:"/\\|?*]/g,
+                "_"
+            );
+
+
+        /* =================================================
+           JPEG FILENAME
+        ================================================= */
+
+        const filename =
+            "Employee_ID_" +
+            idNumber +
+            "_" +
+            side.toUpperCase() +
+            ".jpg";
+
+
+        /* =================================================
+           CONVERT TO JPEG
+        ================================================= */
+
+        canvas.toBlob(
+
+            function(blob) {
+
+                if (!blob) {
+
+                    alert(
+                        "Unable to create JPEG."
+                    );
+
+                    return;
+
+                }
+
+
+                /* Create download */
+
+                const url =
+                    URL.createObjectURL(blob);
+
+
+                const link =
+                    document.createElement("a");
+
+
+                link.href = url;
+
+                link.download = filename;
+
+                link.style.display = "none";
+
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                link.remove();
+
+
+                /* Cleanup */
+
+                setTimeout(function() {
+
+                    URL.revokeObjectURL(url);
+
+                }, 30000);
+
+
+                alert(
+
+                    side.toUpperCase() +
+                    " ID saved successfully!\n\n" +
+
+                    "Filename: " +
+                    filename +
+
+                    "\n\n" +
+
+                    "PVC ID Size:\n" +
+
+                    "53.98 × 85.60 mm\n\n" +
+
+                    "High-resolution JPEG created."
+
+                );
+
+            },
+
+            "image/jpeg",
+
+            0.98
+
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "JPEG export error:",
+            error
+        );
+
+
+        alert(
+
+            "The JPEG could not be created.\n\n" +
+
+            "Please make sure you are connected to the internet.\n\n" +
+
+            "Error: " +
+            error.message
+
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            side === "front"
+                ? "SAVE FRONT AS JPEG"
+                : "SAVE BACK AS JPEG";
+
+    }
+
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+function printCards() {
+
+    document
+        .querySelectorAll(".selected")
+        .forEach(el => {
+
+            el.classList.remove("selected");
+
+        });
+
+
+    window.print();
+
+}
+
+
+/* =========================================================
+   INITIAL UPDATE
+========================================================= */
+
+update();
+
+</script>
+
+</body>
+</html>
+
