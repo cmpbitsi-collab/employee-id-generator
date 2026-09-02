@@ -196,10 +196,15 @@ h1 {
 .owner-photo {
     position: absolute;
 
-    width: 45%;
-    height: 28%;
+    /* PHOTO SIZE */
+    width: 38%;
+    height: 26%;
 
-    left: 31%;
+    /* EXACT HORIZONTAL CENTER */
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* VERTICAL POSITION */
     top: 33%;
 
     object-fit: cover;
@@ -211,6 +216,8 @@ h1 {
     display: block !important;
 
     z-index: 50;
+
+    margin: 0;
 
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -667,17 +674,26 @@ h1 {
     /* OWNER PHOTO */
 
     .owner-photo {
-        display: block !important;
-        visibility: visible !important;
+    display: block !important;
+    visibility: visible !important;
 
-        width: 38% !important;
-        height: 26% !important;
+    width: 38% !important;
+    height: 26% !important;
 
-        z-index: 999 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
 
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
+    top: 33% !important;
+
+    margin: 0 !important;
+
+    z-index: 999 !important;
+
+    object-fit: cover !important;
+
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
 
     /* BACKGROUND */
 
